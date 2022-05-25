@@ -71,7 +71,7 @@
     addiu $20, $15, 1
 
     #Reg21 = GPR[15] + 1 (signed)
-     #addi $21, $15, 1
+        #addi $21, $15, 1
         
     #Reg22 = count_leading_ones(GPR[11])
     clo $22, $11
