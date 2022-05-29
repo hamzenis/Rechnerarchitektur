@@ -8,7 +8,7 @@ func:
 	add $2, $0, $5
 
 	#Zeile 4
-	beq $4, $0, loop
+	beq $4, $0, ende
 	
 	#Zeile 5
 	beq $5, $0, z9
@@ -49,12 +49,11 @@ z7:
 z9:
 	add $2, $4, $0
 	
-#Zeile 10
-loop:
-	j loop
-
+#Zeile 10(ehemaliger Loop)
+ende:
+	jr $31
 
 main: 
-	addiu $4, $0, 210
-	addiu $5, $0, 28
+	addiu $4, $0, 42
+	addiu $5, $0, 49
 	jal func
