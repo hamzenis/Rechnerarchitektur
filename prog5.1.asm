@@ -1,46 +1,40 @@
 .text
 	#Zeile 1-3
-	addiu $4, $0, 25
-	addiu $5, $0, 30
+	addiu $4, $0, 210
+	addiu $5, $0, 28
 	add $2, $0, $5
 
 	#Zeile 4
 	beq $4, $0, loop
 	
 	#Zeile 5
+z5:
 	beq $5, $0, z9
 	
 	#Zeile6
+z6a:
 	slt $27, $5, $4
-	bne $27, $0, z6
-	sll $0, $0, 0	#No Op
+	bne $27, $0, z6b
 	
+
 	#Zeile7
-	beq $27, $0, z7
-	sll $0, $0, 0	#No Op
+z7a:
+	beq $27, $0, z7b
 	
 	#Zeile8
-	or $26, $0, $0		#Jump Back
-	lui $26, 0x0040		#    |
-	ori $26, $26, 0x0010	#    |
-	jr $26			#Jump Back
-	
+z8:
+	j z5			#Jump Back
+
 	
 #Zeile6
-z6:
+z6b:
 	subu $4, $4, $5
-	or $26, $0, $0		#Jump Back
-	lui $26, 0x0040		#    |
-	ori $26, $26, 0x1c	#    |
-	jr $26			#Jump Back
+	j z7a			#Jump Back
 	
 #Zeile7
-z7:
+z7b:
 	subu $5, $5, $4
-	or $26, $0, $0		#Jump Back
-	lui $26, 0x0040		#    |
-	ori $26, $26, 36	#    |
-	jr $26			#Jump Back
+	j z8			#Jump Back
 		
 #Zeile 9
 z9:
