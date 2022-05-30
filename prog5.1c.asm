@@ -24,8 +24,8 @@ func:
 	
 	#Zeile8
 	or $26, $0, $0		#Jump Back
-	lui $26, 0x0040
-	ori $26, $26, 0xc
+	lui $26, 0x0040		#    |
+	ori $26, $26, 0xc	#    |
 	jr $26			#Jump Back
 	
 	
@@ -33,16 +33,16 @@ func:
 z6:
 	subu $4, $4, $5
 	or $26, $0, $0		#Jump Back
-	lui $26, 0x0040
-	ori $26, $26, 0x18
+	lui $26, 0x0040		#    |
+	ori $26, $26, 0x18	#    |
 	jr $26			#Jump Back
 	
 #Zeile7
 z7:
 	subu $5, $5, $4
 	or $26, $0, $0		#Jump Back
-	lui $26, 0x0040
-	ori $26, $26, 0x20
+	lui $26, 0x0040		#    |
+	ori $26, $26, 0x20	#    |
 	jr $26			#Jump Back
 		
 #Zeile 9

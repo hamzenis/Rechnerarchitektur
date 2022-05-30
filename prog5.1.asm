@@ -1,7 +1,7 @@
 .text
 	#Zeile 1-3
-	addiu $4, $0, 17
-	addiu $5, $0, 51
+	addiu $4, $0, 25
+	addiu $5, $0, 30
 	add $2, $0, $5
 
 	#Zeile 4
@@ -21,8 +21,8 @@
 	
 	#Zeile8
 	or $26, $0, $0		#Jump Back
-	lui $26, 0x0040
-	ori $26, $26, 0x0010
+	lui $26, 0x0040		#    |
+	ori $26, $26, 0x0010	#    |
 	jr $26			#Jump Back
 	
 	
@@ -30,16 +30,16 @@
 z6:
 	subu $4, $4, $5
 	or $26, $0, $0		#Jump Back
-	lui $26, 0x0040
-	ori $26, $26, 0x1c
+	lui $26, 0x0040		#    |
+	ori $26, $26, 0x1c	#    |
 	jr $26			#Jump Back
 	
 #Zeile7
 z7:
 	subu $5, $5, $4
 	or $26, $0, $0		#Jump Back
-	lui $26, 0x0040
-	ori $26, $26, 36
+	lui $26, 0x0040		#    |
+	ori $26, $26, 36	#    |
 	jr $26			#Jump Back
 		
 #Zeile 9
