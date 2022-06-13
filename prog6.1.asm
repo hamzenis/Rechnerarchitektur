@@ -30,7 +30,7 @@ strtolower:
 		bne $12, $13, loop	# Falls die Grenzen nicht passen, dann nächster Buchstabe
 		addiu $11, $11, 32	# Mit +32 dez wird vom Großbuchstaben in den Bereich der Kleinbuchstaben Ascii's 
 		sb $11, 0($10)
-		addiu $10, $10, 4
+		addiu $10, $10, 1
 		j loop
 		
 		
