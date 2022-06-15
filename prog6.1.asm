@@ -1,14 +1,15 @@
 .data
 
 str: .asciiz "TOLowerCASETeSt"
-str2: .asciiz "LageR"
-str3: .asciiz "RegaR"
+#str2: .asciiz "LageR"
+#str3: .asciiz "RegaR"
 
 .text
 
 main:
 	la $a0, str
 	jal strtolower
+	jal strturnaround
 	#la $a0, str2
 	#jal strtolower
 	#la $a0, str3
@@ -47,10 +48,33 @@ jumpbackToLow:
 
 # Start TurnAroundFunction
 strturnaround:
+	addiu $a1, $a0, 0 		# Kopie der Startadresse des Strings
+	addiu $a2, $a0, 0		# Wird für die Endadresse verwendet
 	
+loopTurnHoch:
+	lb $t0, ($a2)
+	beqz $t0, subTurn		# Wenn $a2 gleich 0 ist, dann wird zum eigentlichen Umdrehen gesprungen
+	addiu $a2, $a2, 1		# Es wird hochgezaehlt bis das Ende des Strings erreicht wurde, der mit einer Null terminiert
+	j loopTurnHoch
 
+subTurn:
+	addiu $a2, $a2, -1
+	
+turnAroundloop:
+	bleu $a2, $a1,  jumpbackTurnAr	# Wenn die $a2 und die $a1 sich in der Mitte treffen oder $a2 unter $a1 fällt dann Endet die Funktion
+	lbu $t0, ($a1)			# Laden der Buchstaben in Registern
+	lbu $t1, ($a2)			# s.o.
 
-
+	sb $t1, ($a1)			# Einspeichern der Buchstaben an den Registern
+	sb $t0, ($a2)			# s.o.
+	
+	addiu $a1, $a1, 1		# Erhöhen der Adressen
+	addiu $a2, $a2, 1		# s.o.
+	
+	j turnAroundloop
+	
+jumpbackTurnAr:
+	jr $31
 
 # End TurnAroundFunction
 
