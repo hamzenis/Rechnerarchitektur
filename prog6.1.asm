@@ -27,7 +27,7 @@ main:
 	la $a2, str3
 	jal strcat
 	
-	la $a2, str3		# strispalindrom(str3);
+	la $a0, str3		# strispalindrom(str3);
 	jal strispalindrom
 
 end:
@@ -149,7 +149,6 @@ loopcat2:
 	j loopcat2			# Loop
 
 endchar:
-	#addiu $a2, $a2, 1		# Erhöhen der Adresse um 1 nach dem letzten Char zu kommen
 	sb $0, ($a2)			# Der String wird mit einem \0 terminiert
 	j jumbackCat
 
