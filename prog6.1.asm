@@ -1,21 +1,25 @@
 .data
 
 #str: .asciiz "TOLowerCASETeSt"
-#str2: .asciiz "LageR"
-#str3: .asciiz "RegaR"
-str4: .asciiz "Lagerkegal"
+str2: .asciiz "Lager"
+str3: .asciiz "Regal"
+#str4: .asciiz "Lagerregal"
+#str5: .asciiz "madam"
 
 .text
 
 main:
-	la $a0, str4
-	jal strtolower
-	jal strturnaround
-	jal strispalindrom
+	#la $a0, str5
+	#jal strtolower
+	#jal strturnaround
+	#jal strispalindrom
 	#la $a0, str2
 	#jal strtolower
 	#la $a0, str3
 	#jal strtolower
+	la $a0, str2
+	la $a1, str3
+	la $a2, 0x10010080
 	
 end:
 	j end
@@ -114,3 +118,26 @@ jumpbackPalin:
 	jr $31
 
 # End isPalindrom Function
+
+
+# void strcat(char *result, char *str1, char *str2)
+# Start of strcat
+
+strcat:
+loopcat1:
+	beq $a0, $0, loopcat2
+		
+
+loopcat2:
+	beq $a1, $0, endchar
+
+endchar:
+	sb $0, ($a1)
+	
+	j jumbackCat
+
+jumbackCat: 
+	jr $31
+
+
+
