@@ -1,7 +1,7 @@
 .data
 ausgabe1: .asciiz "Geben Sie einen String ein:"
 ausgabe2: .asciiz "Geben Sie einen Char ein:"
-ausgabe3: .asciiz "Moechten Sie das Programm noch einmal laufen lassen? (1 = Yes / 0 = No):"
+ausgabe3: .asciiz "Moechten Sie das Programm noch einmal laufen lassen?"
 buffer: .space 128
 
 .text
@@ -25,11 +25,12 @@ main:
 	
 				# Eingabe zum Lesen eines Char
 	li $v0, 12		# Code zum Einlesen eines Char
-	syscall 		
-	move $s0, $v0		# Speichern des Char an ein "sicheres" Register
+	syscall
+	move $a2, $v0
 	
 	la $a0, buffer
 	jal ncstr
+	move $t0, $v0
 	jal menue
 	
 
@@ -43,11 +44,10 @@ menue:
 	la $a0, ausgabe3	
 	syscall
 				# Eingabe eines Integers wegen der Aufforderung die gestellt wurde
-	li $v0, 5		# Code zur Eingabe eines Int
+	li $v0, 50		# Code ConfirmDialog
 	syscall
-	move $t0, $v0		# Speichern des Ints an ein "sicheres" Register
 	
-	bnez $t0, main		# Falls Die eingabe keiner 0 entspricht springt es zur main
+	beqz $a0, main		# Falls Die eingabe 0 entspricht springt es zur main
 	jr $31			# Ansonsten springt es zurück 
 	
 	
@@ -56,19 +56,19 @@ menue:
 # Start of ncstr
 
 ncstr:
-	addiu $a1, $a0, 0 	# Kopie der Adresse
-	add $s1, $0, $0		# Leeren VON $s1
+	addiu $t2, $a0, 0 	# Kopie der Adresse
+	add $v0, $0, $0		# Leeren VON $v0
 	
 loopNcstr:
-	lbu $t0, ($a1)		# Laden des Asciizeichen in $t0
+	lbu $t0, ($t2)		# Laden des Asciizeichen in $t0
 	beqz $t0, jumpbackNcstr	# Falls das Asciizeichen eine 0 ist, wird das Programm beendet
-	addiu $a1, $a1, 1	# Erhöhen der Adresse
-	seq $t1, $t0, $s0	# $t1 wird auf 1 gesetzt, wenn das Asciizeichen in $t0 und der eingegebene Char gleich sind
+	addiu $t2, $t2, 1	# Erhöhen der Adresse
+	seq $t1, $t0, $a2	# $t1 wird auf 1 gesetzt, wenn das Asciizeichen in $t0 und der eingegebene Char gleich sind
 	bnez $t1, zaehler	# Falls das Register nicht 0 ist
 	j loopNcstr
 	
 zaehler:
-	addi $s1, $s1, 1	# Zaehler der die Anzahl der gleichen Buchstaben speichert ($s1)
+	addi $v0, $v0, 1	# Zaehler der die Anzahl der gleichen Buchstaben speichert ($s1)
 	j loopNcstr	
 
 jumpbackNcstr:

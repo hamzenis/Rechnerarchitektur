@@ -42,7 +42,7 @@ strtolower:
 	addiu $10, $a0, 0	# Kopie der Adresse mit dem String
 
 loopToLow:
-    	lbu $11, 0($10)			# Laedt den ersten Buchstaben in Register 11
+    	lbu $11, ($10)			# Laedt den ersten Buchstaben in Register 11
    	addiu $10, $10, 1		# Increment für den nächsten Durchlauf
    	beq $11, $0, jumpbackToLow	# Wenn leer dann jumpback
    	slt $12, $11, $9		# Wenn der Buchstabe in $11 kleiner ist als die Grenze der Großbuchstaben Ascii's , die in $9 gespeichert sind
@@ -50,7 +50,7 @@ loopToLow:
     	bne $12, $13, loopToLow		# Falls die Grenzen nicht passen, dann nächster Buchstabe
     	addiu $11, $11, 32		# Mit +32 dez wird vom Großbuchstaben in den Bereich der Kleinbuchstaben Ascii's
     	addiu $20, $10, -1		# Decrement zum speichern an der richtigen Adresse, aber mit einem anderen Register
-    	sb $11, 0($20)			# Store des Kleinbuchstaben
+    	sb $11, ($20)			# Store des Kleinbuchstaben
     	j loopToLow
     
 jumpbackToLow:
@@ -113,8 +113,8 @@ palinCheck:
 	lbu $t0, ($a1)			# Laden der Buchstaben in Registern
 	lbu $t1, ($a2)			# s.o.
 
-	seq $a3, $t0, $t1		# If $t1 = $t0 dann wird $a3 auf 1 gesetzt, sonst 0
-	beq $a3, $0, jumpbackPalin	# Jumpback falls false
+	seq $v0, $t0, $t1		# If $t1 = $t0 dann wird $a3 auf 1 gesetzt, sonst 0
+	beq $v0, $0, jumpbackPalin	# Jumpback falls false
 	
 	addiu $a1, $a1, 1		# Erhöhen der Adresse
 	addiu $a2, $a2, -1		# Erniedrigen der Adresse
@@ -122,7 +122,6 @@ palinCheck:
 	
 	
 jumpbackPalin:
-	move $s0, $a3			# In $s0 soll der Rückgabewert gespeichert werden
 	jr $31
 
 # End isPalindrom Function
