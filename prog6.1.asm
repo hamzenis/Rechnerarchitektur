@@ -49,8 +49,8 @@ loopToLow:
     	slt $13, $8, $11		# Logik wie oben nur anders rum
     	bne $12, $13, loopToLow		# Falls die Grenzen nicht passen, dann nächster Buchstabe
     	addiu $11, $11, 32		# Mit +32 dez wird vom Großbuchstaben in den Bereich der Kleinbuchstaben Ascii's
-    	addiu $20, $10, -1		# Decrement zum speichern an der richtigen Adresse, aber mit einem anderen Register
-    	sb $11, ($20)			# Store des Kleinbuchstaben
+    	addiu $14, $10, -1		# Decrement zum speichern an der richtigen Adresse, aber mit einem anderen Register
+    	sb $11, ($14)			# Store des Kleinbuchstaben
     	j loopToLow
     
 jumpbackToLow:
@@ -61,28 +61,28 @@ jumpbackToLow:
 # void strturnaround(char *str)
 # Start TurnAroundFunction
 strturnaround:
-	addiu $a1, $a0, 0 		# Kopie der Startadresse des Strings
-	addiu $a2, $a0, 0		# Wird für die Endadresse verwendet
+	addiu $t6, $a0, 0 		# Kopie der Startadresse des Strings
+	addiu $t7, $a0, 0		# Wird für die Endadresse verwendet
 	
 loopTurnHoch:
-	lb $t0, ($a2)			# Laden des AsciiZeichens
-	beqz $t0, subTurn		# Wenn $a2 gleich 0 ist, dann wird zum eigentlichen Umdrehen gesprungen
-	addiu $a2, $a2, 1		# Es wird hochgezaehlt bis das Ende des Strings erreicht wurde, der mit einer Null terminiert
+	lb $t0, ($t7)			# Laden des AsciiZeichens
+	beqz $t0, subTurn		# Wenn $t7 gleich 0 ist, dann wird zum eigentlichen Umdrehen gesprungen
+	addiu $t7, $t7, 1		# Es wird hochgezaehlt bis das Ende des Strings erreicht wurde, der mit einer Null terminiert
 	j loopTurnHoch
 
 subTurn:
-	addiu $a2, $a2, -1		# Damit das letzte Zeichen erreicht wird, weil der Zeiger auf dem Zeichen danach ist
+	addiu $t7, $t7, -1		# Damit das letzte Zeichen erreicht wird, weil der Zeiger auf dem Zeichen danach ist
 	
 turnAroundloop:
-	bleu $a2, $a1,  jumpbackTurnAr	# Wenn die $a2 und die $a1 sich in der Mitte treffen oder $a2 unter $a1 fällt dann Endet die Funktion
-	lbu $t0, ($a1)			# Laden der Buchstaben in Registern
-	lbu $t1, ($a2)			# s.o.
+	bleu $t7, $t6,  jumpbackTurnAr	# Wenn die $a2 und die $a1 sich in der Mitte treffen oder $a2 unter $a1 fällt dann Endet die Funktion
+	lbu $t0, ($t6)			# Laden der Buchstaben in Registern
+	lbu $t1, ($t7)			# s.o.
 
-	sb $t1, ($a1)			# Einspeichern der Buchstaben an den Registern
-	sb $t0, ($a2)			# s.o.
+	sb $t1, ($t6)			# Einspeichern der Buchstaben an den Registern
+	sb $t0, ($t7)			# s.o.
 	
-	addiu $a1, $a1, 1		# Erhöhen der Adresse
-	addiu $a2, $a2, -1		# Erniedrigen der Adresse
+	addiu $t6, $t6, 1		# Erhöhen der Adresse
+	addiu $t7, $t7, -1		# Erniedrigen der Adresse
 	
 	j turnAroundloop
 	
@@ -96,28 +96,28 @@ jumpbackTurnAr:
 # Start isPalindrom Function
 
 strispalindrom:
-	addiu $a1, $a0, 0 		# Kopie der Startadresse des Strings
-	addiu $a2, $a0, 0		# Wird für die Endadresse verwendet
+	addiu $t6, $a0, 0 		# Kopie der Startadresse des Strings
+	addiu $t7, $a0, 0		# Wird für die Endadresse verwendet
 	
 loopPalinHoch:
-	lb $t0, ($a2)			# Laden des AsciiZeichens
-	beqz $t0, subPalin		# Wenn $a2 gleich 0 ist, dann wird zum eigentlichen Umdrehen gesprungen
-	addiu $a2, $a2, 1		# Es wird hochgezaehlt bis das Ende des Strings erreicht wurde, der mit einer Null terminiert
+	lb $t0, ($t7)			# Laden des AsciiZeichens
+	beqz $t0, subPalin		# Wenn $t7 gleich 0 ist, dann wird zum eigentlichen Umdrehen gesprungen
+	addiu $t7, $t7, 1		# Es wird hochgezaehlt bis das Ende des Strings erreicht wurde, der mit einer Null terminiert
 	j loopPalinHoch
 
 subPalin:
-	addiu $a2, $a2, -1		# Damit das letzte Zeichen erreicht wird, weil der Zeiger auf dem Zeichen danach ist
+	addiu $t7, $t7, -1		# Damit das letzte Zeichen erreicht wird, weil der Zeiger auf dem Zeichen danach ist
 
 palinCheck:
-	bleu $a2, $a1, jumpbackPalin	# Wenn die $a2 und die $a1 sich in der Mitte treffen oder $a2 unter $a1 fällt dann Endet die Funktion
-	lbu $t0, ($a1)			# Laden der Buchstaben in Registern
-	lbu $t1, ($a2)			# s.o.
+	bleu $t7, $t6, jumpbackPalin	# Wenn die $a2 und die $a1 sich in der Mitte treffen oder $a2 unter $a1 fällt dann Endet die Funktion
+	lbu $t0, ($t6)			# Laden der Buchstaben in Registern
+	lbu $t1, ($t7)			# s.o.
 
-	seq $v0, $t0, $t1		# If $t1 = $t0 dann wird $a3 auf 1 gesetzt, sonst 0
+	seq $v0, $t0, $t1		# If $t1 = $t0 dann wird $v0 auf 1 gesetzt, sonst 0
 	beq $v0, $0, jumpbackPalin	# Jumpback falls false
 	
-	addiu $a1, $a1, 1		# Erhöhen der Adresse
-	addiu $a2, $a2, -1		# Erniedrigen der Adresse
+	addiu $t6, $t6, 1		# Erhöhen der Adresse
+	addiu $t7, $t7, -1		# Erniedrigen der Adresse
 	j palinCheck
 	
 	

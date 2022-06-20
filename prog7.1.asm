@@ -57,7 +57,7 @@ menue:
 
 ncstr:
 	addiu $t2, $a0, 0 	# Kopie der Adresse
-	add $v0, $0, $0		# Leeren VON $v0
+	add $v0, $0, $0		# Leeren von $v0
 	
 loopNcstr:
 	lbu $t0, ($t2)		# Laden des Asciizeichen in $t0
