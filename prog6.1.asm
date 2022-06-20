@@ -1,26 +1,35 @@
 .data
 
-#str: .asciiz "TOLowerCASETeSt"
-str2: .asciiz "Lager"
-str3: .asciiz "Regal"
-#str4: .asciiz "Lagerregal"
-#str5: .asciiz "madam"
+str1: .asciiz "Lager"
+str2: .asciiz "Regal"
+str3: .space  10
+      .byte  0xff
+      .byte  0xff
+
 
 .text
 
 main:
-	#la $a0, str5
-	#jal strtolower
-	#jal strturnaround
-	#jal strispalindrom
-	#la $a0, str2
-	#jal strtolower
-	#la $a0, str3
-	#jal strtolower
-	la $a0, str2
-	la $a1, str3
-	la $a2, 0x10010080
+	la $a0, str1		# strtolower(str1);
+	jal strtolower
 	
+	la $a0, str2		# strtolower(str2);
+	jal strtolower
+	
+	la $a0, str1		# strturnaround(str1);
+	jal strturnaround
+	
+	la $a0, str2		# strturnaround(str2);
+	jal strturnaround
+
+	la $a0, str1		# strcat(str3,str1,str2);
+	la $a1, str2
+	la $a2, str3
+	jal strcat
+	
+	la $a2, str3		# strispalindrom(str3);
+	jal strispalindrom
+
 end:
 	j end
 
@@ -86,7 +95,6 @@ jumpbackTurnAr:
 # int strispalindrom(char *str)
 # Start isPalindrom Function
 
-
 strispalindrom:
 	addiu $a1, $a0, 0 		# Kopie der Startadresse des Strings
 	addiu $a2, $a0, 0		# Wird für die Endadresse verwendet
@@ -125,19 +133,27 @@ jumpbackPalin:
 
 strcat:
 loopcat1:
-	beq $a0, $0, loopcat2
-		
+	lbu $t0, ($a0)			# Laedt das Asciizeichen in $t0
+	beqz $t0, loopcat2		# Wenn der Endcharakter \0 erreicht wird springt es zum nächsten Label
+	sb $t0, ($a2)			# Speichern des Asciizeichens an die Adresse von $a2
+	addiu $a0, $a0, 1		# Erhöhen der Adresse
+	addiu $a2, $a2, 1		# Erhöhen der Adresse
+	j loopcat1			# Loop
 
 loopcat2:
-	beq $a1, $0, endchar
+	lbu $t0, ($a1)			# Laedt das Asciizeichen in $t0
+	beqz $t0, endchar		# Wenn der Endcharakter \0 erreicht wird springt es zum nächsten Label
+	sb $t0, ($a2)			# Speichern des Asciizeichens an die Adresse von $a2
+	addiu $a1, $a1, 1		# Erhöhen der Adresse
+	addiu $a2, $a2, 1		# Erhöhen der Adresse
+	j loopcat2			# Loop
 
 endchar:
-	sb $0, ($a1)
-	
+	#addiu $a2, $a2, 1		# Erhöhen der Adresse um 1 nach dem letzten Char zu kommen
+	sb $0, ($a2)			# Der String wird mit einem \0 terminiert
 	j jumbackCat
 
 jumbackCat: 
 	jr $31
 
-
-
+# End of strcat
