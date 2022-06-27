@@ -1,5 +1,5 @@
 .data
-ausgabe1: .asciiz "Geben Sie einen String ein:"
+ausgabe1: .asciiz "\nGeben Sie einen String ein:"
 ausgabe2: .asciiz "\nGeben Sie einen Char ein:"
 ausgabe3: .asciiz "\nMoechten Sie das Programm noch einmal laufen lassen?"
 ausgabe4: .asciiz "\nDie Anzahl der Chars:"
@@ -27,11 +27,13 @@ main:
 				# Eingabe zum Lesen eines Char
 	li $v0, 12		# Code zum Einlesen eines Char
 	syscall
-	move $a2, $v0
+	move $a1, $v0
 	
 	la $a0, buffer
 	jal ncstr
-	move $t0, $v0
+	
+	move $t0, $v0		# Moven der Rückgabe in $t0
+	
 				# Ausgabe der Aufforderung
 	li $v0, 4		
 	la $a0, ausgabe4
@@ -73,7 +75,7 @@ loopNcstr:
 	lbu $t0, ($t2)		# Laden des Asciizeichen in $t0
 	beqz $t0, jumpbackNcstr	# Falls das Asciizeichen eine 0 ist, wird das Programm beendet
 	addiu $t2, $t2, 1	# Erhöhen der Adresse
-	seq $t1, $t0, $a2	# $t1 wird auf 1 gesetzt, wenn das Asciizeichen in $t0 und der eingegebene Char gleich sind
+	seq $t1, $t0, $a1	# $t1 wird auf 1 gesetzt, wenn das Asciizeichen in $t0 und der eingegebene Char gleich sind
 	bnez $t1, zaehler	# Falls das Register nicht 0 ist
 	j loopNcstr
 	
@@ -83,4 +85,5 @@ zaehler:
 
 jumpbackNcstr:
 	jr $31
+
 
