@@ -1,7 +1,8 @@
 .data
 ausgabe1: .asciiz "Geben Sie einen String ein:"
-ausgabe2: .asciiz "Geben Sie einen Char ein:"
-ausgabe3: .asciiz "Moechten Sie das Programm noch einmal laufen lassen?"
+ausgabe2: .asciiz "\nGeben Sie einen Char ein:"
+ausgabe3: .asciiz "\nMoechten Sie das Programm noch einmal laufen lassen?"
+ausgabe4: .asciiz "\nDie Anzahl der Chars:"
 buffer: .space 128
 
 .text
@@ -31,6 +32,15 @@ main:
 	la $a0, buffer
 	jal ncstr
 	move $t0, $v0
+				# Ausgabe der Aufforderung
+	li $v0, 4		
+	la $a0, ausgabe4
+	syscall
+				# Ausgabe Int
+	li $v0, 1		
+	la $a0, ($t0)
+	syscall
+	
 	jal menue
 	
 
@@ -73,15 +83,4 @@ zaehler:
 
 jumpbackNcstr:
 	jr $31
-
-
-
-
-
-
-
-
-
-
-
 
