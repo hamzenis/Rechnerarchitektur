@@ -5,6 +5,9 @@ n1:   .word 0
 aussage1: .asciiz "\nGeben Sie Ihren Zaehler ein: "
 aussage2: .asciiz "\nGeben Sie Ihren Nenner ein: "
 aussage3: .asciiz "\nFehler Nenner = 0"
+aussage4: .asciiz "\nReduzierte Darstellung: "
+slash: .asciiz " / "
+ggTPrint: .asciiz " ggt "
 dialog: .asciiz "Wollen Sie das Programm erneuert ausführen?"
 
 .text
@@ -39,6 +42,9 @@ main:
 	move $t0, $v0 		# Return Wert speichern
 	beqz $t0, fehler	# Falls Return Wert 0 (Wenn Nenner = 0)
 	
+	# Print der Ergebnisse
+	jal print
+	
 ende:
 	li $v0, 50
 	la $a0, dialog
@@ -54,6 +60,7 @@ fehler:
 	li $v0, 4
 	syscall
 	j ende
+	
 
 # int reduce_fraction(int z, int n, int *z1, int *n1)
 
@@ -123,3 +130,31 @@ euklid:
 
     finish:
         jr $31
+
+# Print Funktion
+print:
+	# Print String
+	la $a0, aussage4
+	li $v0, 4
+	syscall
+	# Print Int z1
+	lw $a0, z1
+	li $v0, 1
+	syscall
+	# Print Slash
+	la $a0, slash
+	li $v0, 4
+	syscall
+	# Print Int n1
+	lw $a0, n1
+	li $v0, 1
+	syscall
+	# Print String
+	la $a0, ggTPrint
+	li $v0, 4
+	syscall
+	# Print Int ggt
+	move $a0, $t0
+	li $v0, 1
+	syscall
+	jr $ra
