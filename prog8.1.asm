@@ -4,6 +4,7 @@ n1:   .word 0
 
 aussage1: .asciiz "\nGeben Sie Ihren Zaehler ein: "
 aussage2: .asciiz "\nGeben Sie Ihren Nenner ein: "
+aussage3: .asciiz "\nFehler Nenner = 0"
 dialog: .asciiz "Wollen Sie das Programm erneuert ausführen?"
 
 .text
@@ -36,7 +37,7 @@ main:
 	la $a3, n1		# Adresse von n1
 	jal reduce_fraction
 	move $t0, $v0 		# Return Wert speichern
-	
+	beqz $t0, fehler	# Falls Return Wert 0 (Wenn Nenner = 0)
 	
 ende:
 	li $v0, 50
@@ -45,6 +46,14 @@ ende:
 	beqz $a0, main
 	li $v0, 10
 	syscall
+	
+# Wenn $v0 = 0 dann Fehler Aussage
+fehler:
+	# Print String
+	la $a0, aussage3
+	li $v0, 4
+	syscall
+	j ende
 
 # int reduce_fraction(int z, int n, int *z1, int *n1)
 
@@ -88,6 +97,8 @@ jumpBackZero:
 	li $v0, 0
 	jr $31
 	
+	
+
 # Code aus prog5.1c.asm (Optimierung Möglich)
 euklid:
         #Zeile 3
@@ -112,18 +123,18 @@ euklid:
         
         #Zeile8
     z8:
-        j z5			#Jump Back
+        j z5			
 
         
     #Zeile6
     z6b:
         subu $4, $4, $5
-        j z7a			#Jump Back
+        j z7a
         
     #Zeile7
     z7b:
         subu $5, $5, $4
-        j z8			#Jump Back
+        j z8
             
     #Zeile 9
     z9:
