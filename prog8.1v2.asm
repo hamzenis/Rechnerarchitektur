@@ -99,32 +99,24 @@ jumpBackZero:
 	
 	
 
-# Code aus prog5.1c.asm (Optimierung Möglich)
+# Code aus prog5.1c.asm (optimiert)
 euklid:
 
         add $2, $0, $5
         beq $4, $0, finish
         
     z5:
-        beq $5, $0, z9
+        beqz $5, z9
 
-    z6a:
-        slt $t7, $5, $4
-        bne $t7, $0, z6b
-        
-    z7a:
-        beq $t7, $0, z7b
-
-    z8:
-        j z5			
-
-    z6b:
+    z6:
+        sgt $t7, $4, $5
+        beqz $t7, z7
         subu $4, $4, $5
-        j z7a
-
-    z7b:
+        j z5
+          
+    z7:
         subu $5, $5, $4
-        j z8
+        j z5
 
     z9:
         add $2, $4, $0
