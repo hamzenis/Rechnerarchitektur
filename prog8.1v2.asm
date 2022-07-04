@@ -68,23 +68,31 @@ reduce_fraction:
 	beqz $a1, jumpBackZero
 	
 	# Retten von $ra in Stack
-	addi $sp, $sp, -4
+	addi $sp, $sp, -20
 	sw $ra, 0($sp)
+	sw $a0, 4($sp)
+	sw $a1, 8($sp)
+	sw $a2, 12($sp)
+	sw $a3, 16($sp)
 	
-	# Jump zu Euklid
+	# Jump zu Euklid und Wiederherstellen der Argumente
 	jal euklid
+	lw $a0, 4($sp)
+	lw $a1, 8($sp)
+	lw $a2, 12($sp)
+	lw $a3, 16($sp)
 	
 	# Moven des Ergebnisses von Euklid (int t == $t0)
 	move $t0, $v0
 	
 	# Wiederherstellen von $ra und Stack
 	lw $ra, 0($sp)
-	addi $sp, $sp, 4
+	addi $sp, $sp, 20
 	
 	# Div von z1 und n1
-	div $t8, $t0
+	div $a0, $t0
 	mflo $t1
-	div $t9, $t0
+	div $a1, $t0
 	mflo $t2
 	
 	# Speichern der Ergebnisse in z1 und n1
